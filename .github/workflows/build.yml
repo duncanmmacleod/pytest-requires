@@ -57,6 +57,9 @@ jobs:
     - name: Install this project
       run: python -m pip install *.tar.* -v
 
+    - name: Install test requirements
+      run: python -m pip install coverage
+
     - name: Package list
       run: python -m pip list installed
 
