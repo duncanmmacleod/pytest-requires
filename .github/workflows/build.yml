@@ -59,6 +59,7 @@ jobs:
       run: python -m build . --sdist --wheel --outdir .
 
     - name: Install this project
+      shell: bash  # so that powershell doesn't trip over the wildcard
       run: python -m pip install *.tar.* -v
 
     - name: Install test requirements
