@@ -4,7 +4,7 @@
 
 [![Python versions](https://img.shields.io/pypi/pyversions/pytest-requires.svg)](https://pypi.org/project/pytest-requires)
 
-[![Build status](https://github.com/duncanmmacleod/pytest-requires/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/duncanmmacleod/pytest-requires/actions/workflows/build.yml)
+[![Build status](https://github.com/duncanmmacleod/pytest-requires/actions/workflows/build.yml/badge.svg)](https://github.com/duncanmmacleod/pytest-requires/actions/workflows/build.yml)
 
 A pytest plugin to skip tests with optional requirements
 
