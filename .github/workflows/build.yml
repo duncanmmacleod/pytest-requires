@@ -29,6 +29,7 @@ jobs:
         os:
           - macOS
           - Ubuntu
+          - Windows
         python-version:
           - "3.7"
           - "3.8"
