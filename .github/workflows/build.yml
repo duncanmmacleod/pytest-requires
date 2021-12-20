@@ -75,14 +75,12 @@ jobs:
       run: python -m coverage report --show-missing
 
     - name: Prepare codecov upload
-      run: |
-        # covert report to XML (codecov can't handle sqlite, probably)
-        python -m coverage xml
-        rm -fv .coverage
+      run: python -m coverage xml
 
     - name: Publish coverage to Codecov
       uses: codecov/codecov-action@v2
       with:
+        files: ./coverage.xml
         flags: ${{ runner.os }},python${{ matrix.python-version }}
 
     - name: Upload test results
