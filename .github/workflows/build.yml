@@ -1,0 +1,97 @@
+# -----------------------
+#
+# Run a full build-and-test from the git repo
+# using pip to install all dependencies.
+#
+# -----------------------
+
+name: Build and test
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - release/**
+  pull_request:
+    branches:
+      - main
+      - master
+      - release/**
+
+jobs:
+  test:
+    name: Python ${{ matrix.python-version }} (${{ matrix.os }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macOS
+          - Ubuntu
+        python-version:
+          - 3.5
+          - 3.6
+          - 3.7
+          - 3.8
+          - 3.9
+    runs-on: ${{ matrix.os }}-latest
+
+    steps:
+    - name: Get source code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install build requirements
+      run: python -m pip install build
+
+    - name: Create distributions
+      run: python -m build . --sdist --wheel --outdir .
+
+    - name: Install this project
+      run: python -m pip install *.tar.* -vv
+
+    - name: Package list
+      run: python -m pip list installed
+
+    - name: Run pytest suite
+      run: python -m pytest -ra tests --cov pytest_requires --cov-report= --junitxml=pytest.xml
+
+    - name: Coverage report
+      run: python -m coverage report --show-missing
+
+    - name: Prepare codecov upload
+      run: |
+        # covert report to XML (codecov can't handle sqlite, probably)
+        python -m coverage xml
+        rm -fv .coverage
+
+    - name: Publish coverage to Codecov
+      uses: codecov/codecov-action@v2
+      with:
+        flags: ${{ runner.os }},python${{ matrix.python-version }}
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: pytest-${{ matrix.os }}-${{ matrix.python-version }}
+        path: pytest.xml
+
+    - name: Upload tarball
+      uses: actions/upload-artifact@v2
+      with:
+        name: tarball
+        path: "*.tar.*"
+
+    - name: Upload wheel(s)
+      uses: actions/upload-artifact@v2
+      with:
+        name: wheel
+        path: "*.whl"
