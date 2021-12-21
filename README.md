@@ -6,7 +6,7 @@
 
 [![Build status](https://github.com/duncanmmacleod/pytest-requires/actions/workflows/build.yml/badge.svg)](https://github.com/duncanmmacleod/pytest-requires/actions/workflows/build.yml)
 
-A pytest plugin to skip tests with optional requirements
+A pytest plugin to elegantly skip tests with optional requirements
 
 ------------------------------------------------------------------------
 
